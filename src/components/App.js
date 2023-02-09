@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+import api from '../utils/api';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 import Footer from './Footer';
 import Header from './Header';
 import Main from './Main';
 import ImagePopup from './ImagePopup';
-
-import api from '../utils/api';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
@@ -139,16 +140,27 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
-      <Main
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onEditAvatar={handleEditAvatarClick}
-        onCardClick={handleCardClick}
-        name="place-name"
-        cards={cards}
-        onCardLike={handleCardLike}
-        onCardDelete={handleRemoveCardBtnClick}
-      />
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Main
+              name="place-name"
+              cards={cards}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleRemoveCardBtnClick}
+            />
+          }
+        />
+        <Route path="/sign-up" />
+        <Route path="/sign-in" />
+      </Routes>
+
       <Footer />
 
       <EditProfilePopup
