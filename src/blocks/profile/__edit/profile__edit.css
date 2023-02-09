@@ -1,0 +1,30 @@
+.profile__edit {
+  all: initial;
+  width: 24px;
+  height: 24px;
+  background-image: url('../../../images/edit-pen.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: opacity 0.5s ease-in-out;
+  align-self: flex-start;
+  margin-top: 15px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.profile__edit:hover {
+  opacity: 0.6;
+  transition: opacity 0.5s ease-in-out;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__edit {
+    width: 18px;
+    height: 18px;
+    margin-top: 8px;
+    background-size: 7.5px;
+  }
+}
