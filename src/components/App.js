@@ -7,11 +7,14 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Footer from './Footer';
 import Header from './Header';
 import Main from './Main';
+import Register from './Register';
+import Login from './Login';
 import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ConfirmDeletePopup';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -98,9 +101,7 @@ function App() {
 
   //Действия с карточками
   function handleCardLike(card) {
-    // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .toggleLikes(card._id, isLiked)
       .then((newCard) => {
@@ -157,8 +158,8 @@ function App() {
             />
           }
         />
-        <Route path="/sign-up" />
-        <Route path="/sign-in" />
+        <Route path="/sign-up" element={<Register />} />
+        <Route path="/sign-in" element={<Login />} />
       </Routes>
 
       <Footer />
@@ -187,6 +188,7 @@ function App() {
       />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <InfoTooltip title={"Вы успешно зарегистрировались!"}/>
     </CurrentUserContext.Provider>
   );
 }
