@@ -15,6 +15,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ConfirmDeletePopup';
 import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -25,6 +26,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -146,16 +148,21 @@ function App() {
         <Route
           path="/"
           element={
-            <Main
-              name="place-name"
-              cards={cards}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleRemoveCardBtnClick}
-            />
+            <ProtectedRoute
+              loggedIn={loggedIn}
+              component={
+                <Main
+                  name="place-name"
+                  cards={cards}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleRemoveCardBtnClick}
+                />
+              }
+            ></ProtectedRoute>
           }
         />
         <Route path="/sign-up" element={<Register />} />
@@ -188,7 +195,7 @@ function App() {
       />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-      <InfoTooltip title={"Вы успешно зарегистрировались!"}/>
+      <InfoTooltip title={'Вы успешно зарегистрировались!'} />
     </CurrentUserContext.Provider>
   );
 }
