@@ -1,9 +1,44 @@
-const Login = (props) => {
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import auth from '../utils/auth';
+
+const Login = ({ handleLogin }) => {
+  const [formValue, setFormValue] = useState({
+    password: '',
+    email: '',
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formValue.email || !formValue.password) {
+      return;
+    }
+    auth.login(formValue).then(() => {
+      setFormValue({
+        password: '',
+        email: '',
+      });
+      handleLogin();
+      navigate('/', { replace: true });
+    });
+  };
+
   return (
     <div className="auth">
       <div className="auth__container">
         <h2 className="auth__title">Вход</h2>
-        <form className="auth__form" name="login-form">
+        <form onSubmit={handleSubmit} className="auth__form" name="login-form">
           <fieldset className="auth__set">
             <label className="auth__field">
               <input
@@ -15,8 +50,8 @@ const Login = (props) => {
                 minLength="2"
                 maxLength="40"
                 required
-                // value={name}
-                // onChange={handleNameChange}
+                value={formValue.email}
+                onChange={handleChange}
               />
               <span className="auth__input-error email-input-error"></span>
             </label>
@@ -30,8 +65,8 @@ const Login = (props) => {
                 minLength="2"
                 maxLength="200"
                 required
-                // value={description}
-                // onChange={handleDescChange}
+                value={formValue.password}
+                onChange={handleChange}
               />
               <span className="auth__input-error password-input-error"></span>
             </label>

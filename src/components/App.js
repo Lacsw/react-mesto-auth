@@ -49,6 +49,10 @@ function App() {
     setSelectedCard(card);
   }
 
+  const handleLogin = () => {
+    setLoggedIn(true);
+  };
+
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
@@ -145,28 +149,25 @@ function App() {
       <Header />
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute
-              loggedIn={loggedIn}
-              component={
-                <Main
-                  name="place-name"
-                  cards={cards}
-                  onEditProfile={handleEditProfileClick}
-                  onAddPlace={handleAddPlaceClick}
-                  onEditAvatar={handleEditAvatarClick}
-                  onCardClick={handleCardClick}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleRemoveCardBtnClick}
-                />
-              }
-            ></ProtectedRoute>
-          }
-        />
+        <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
+          <Route
+            path="/"
+            element={
+              <Main
+                name="place-name"
+                cards={cards}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleRemoveCardBtnClick}
+              />
+            }
+          />
+        </Route>
         <Route path="/sign-up" element={<Register />} />
-        <Route path="/sign-in" element={<Login />} />
+        <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
       </Routes>
 
       <Footer />
