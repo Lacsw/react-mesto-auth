@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import api from '../utils/api';
+import auth from '../utils/auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 import Footer from './Footer';
@@ -27,6 +28,10 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isTooltipOpen, setTooltipOpened] = useState(false);
+  const [tooltipStatus, setTooltipStatus] = useState('');
+
+  const navigate = useNavigate();
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -59,6 +64,8 @@ function App() {
     setAddPlacePopupOpen(false);
     setConfimDeletePopupOpen(false);
     setSelectedCard({});
+    setTooltipOpened(false);
+    setTooltipStatus('');
   }
 
   function handleUpdateUser(userInfo) {
@@ -144,6 +151,21 @@ function App() {
       });
   };
 
+  function handelRegisterUser(data) {
+    auth
+      .signup(data)
+      .then(() => {
+        setTooltipOpened(true);
+        setTooltipStatus('success');
+        navigate('/sign-in', { replace: true });
+      })
+      .catch((error) => {
+        setTooltipOpened(true);
+        setTooltipStatus('fail');
+        console.log(error);
+      });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
@@ -166,7 +188,10 @@ function App() {
             }
           />
         </Route>
-        <Route path="/sign-up" element={<Register />} />
+        <Route
+          path="/sign-up"
+          element={<Register onRegister={handelRegisterUser} />}
+        />
         <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
       </Routes>
 
@@ -196,7 +221,11 @@ function App() {
       />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-      <InfoTooltip title={'Вы успешно зарегистрировались!'} />
+      <InfoTooltip
+        status={tooltipStatus}
+        isOpen={isTooltipOpen}
+        onClose={closeAllPopups}
+      />
     </CurrentUserContext.Provider>
   );
 }

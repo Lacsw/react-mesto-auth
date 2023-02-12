@@ -1,9 +1,16 @@
-import success from '../images/success.svg';
-import fail from '../images/fail.svg';
+import successImg from '../images/success.svg';
+import failImg from '../images/fail.svg';
 
-const InfoTooltip = ({ name, title, isOpen, onClose }) => {
+const InfoTooltip = ({ status, isOpen, onClose }) => {
+  const text =
+    status === 'success'
+      ? 'Вы успешно зарегистрировались!'
+      : 'Что-то пошло не так! Попробуйте ещё раз.';
+
+  const tipImg = status === 'success' ? successImg : failImg;
+
   return (
-    <div className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}>
+    <div className={`popup ${isOpen && 'popup_opened'}`}>
       <div className="popup__container">
         <button
           onClick={onClose}
@@ -11,8 +18,8 @@ const InfoTooltip = ({ name, title, isOpen, onClose }) => {
           type="button"
           aria-label="кнопка закрытия попапа"
         ></button>
-        <img className="popup__tooltip-img" src={success} />
-        <h2 className="popup__tooltip-title">{title}</h2>
+        <img className="popup__tooltip-img" src={tipImg} alt={text} />
+        <h2 className="popup__tooltip-title">{text}</h2>
       </div>
     </div>
   );
