@@ -1,7 +1,7 @@
 import { Link, Route, Routes } from 'react-router-dom';
 import logo from '../images/header-logo.svg';
 
-function Header() {
+function Header({ userEmail, onLogout }) {
   return (
     <header className="header">
       <img src={logo} alt="логотип Место" className="header__logo" />
@@ -26,8 +26,8 @@ function Header() {
           path="/"
           element={
             <div className="header__email">
-              testemail@mail.com
-              <Link to="/sign-up" className="header__link">
+              {userEmail}
+              <Link onClick={onLogout} className="header__link">
                 Выйти
               </Link>
             </div>

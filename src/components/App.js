@@ -30,6 +30,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isTooltipOpen, setTooltipOpened] = useState(false);
   const [tooltipStatus, setTooltipStatus] = useState('');
+  const [userEmail, setUserEmail] = useState(null);
 
   const navigate = useNavigate();
 
@@ -81,8 +82,9 @@ function App() {
     if (token) {
       auth
         .checkAuth(token)
-        .then(() => {
+        .then((data) => {
           setLoggedIn(true);
+          setUserEmail(data.data.email);
           navigate('/');
         })
         .catch((error) => {
@@ -190,9 +192,15 @@ function App() {
       });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    navigate('/sing-in');
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header />
+      <Header userEmail={userEmail} onLogout={handleLogout} />
 
       <Routes>
         <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
