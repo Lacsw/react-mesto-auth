@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
-import auth from '../utils/auth';
 
 const Login = ({ handleLogin }) => {
   const [formValue, setFormValue] = useState({
     password: '',
     email: '',
   });
-
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,14 +19,7 @@ const Login = ({ handleLogin }) => {
     if (!formValue.email || !formValue.password) {
       return;
     }
-    auth.login(formValue).then(() => {
-      setFormValue({
-        password: '',
-        email: '',
-      });
-      handleLogin();
-      navigate('/', { replace: true });
-    });
+    handleLogin(formValue);
   };
 
   return (

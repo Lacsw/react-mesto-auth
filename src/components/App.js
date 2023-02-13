@@ -54,10 +54,6 @@ function App() {
     setSelectedCard(card);
   }
 
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
@@ -79,6 +75,21 @@ function App() {
         console.log(e);
       });
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      auth
+        .checkAuth(token)
+        .then(() => {
+          setLoggedIn(true);
+          navigate('/');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [navigate]);
 
   useEffect(() => {
     api
@@ -165,6 +176,19 @@ function App() {
         console.log(error);
       });
   }
+
+  const handleLogin = (formValue) => {
+    auth
+      .login(formValue)
+      .then((data) => {
+        localStorage.setItem('jwt', data.token);
+        setLoggedIn(true);
+        navigate('/', { replace: true });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
