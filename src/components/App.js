@@ -94,24 +94,26 @@ function App() {
   }, [navigate]);
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userData) => {
-        setCurrentUser(userData);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    if (loggedIn) {
+      api
+        .getUserInfo()
+        .then((userData) => {
+          setCurrentUser(userData);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
 
-    api
-      .getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
+      api
+        .getInitialCards()
+        .then((cards) => {
+          setCards(cards);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [loggedIn]);
 
   function handleUpdateAvatar(newAvatar) {
     api
@@ -188,6 +190,8 @@ function App() {
         navigate('/', { replace: true });
       })
       .catch((error) => {
+        setTooltipOpened(true);
+        setTooltipStatus('fail');
         console.log(error);
       });
   };
