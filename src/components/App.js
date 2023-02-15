@@ -30,6 +30,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isTooltipOpen, setTooltipOpened] = useState(false);
   const [tooltipStatus, setTooltipStatus] = useState('');
+  const [tooltipText, setTooltipText] = useState('');
   const [userEmail, setUserEmail] = useState(null);
 
   const navigate = useNavigate();
@@ -172,11 +173,13 @@ function App() {
       .then(() => {
         setTooltipOpened(true);
         setTooltipStatus('success');
+        setTooltipText('Вы успешно зарегистрировались!');
         navigate('/sign-in', { replace: true });
       })
       .catch((error) => {
         setTooltipOpened(true);
         setTooltipStatus('fail');
+        setTooltipText('Что-то пошло не так! Попробуйте ещё раз.');
         console.log(error);
       });
   }
@@ -192,6 +195,7 @@ function App() {
       .catch((error) => {
         setTooltipOpened(true);
         setTooltipStatus('fail');
+        setTooltipText('Что-то пошло не так! Попробуйте ещё раз.');
         console.log(error);
       });
   };
@@ -259,6 +263,7 @@ function App() {
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       <InfoTooltip
         status={tooltipStatus}
+        text={tooltipText}
         isOpen={isTooltipOpen}
         onClose={closeAllPopups}
       />

@@ -1,12 +1,7 @@
 import successImg from '../images/success.svg';
 import failImg from '../images/fail.svg';
 
-const InfoTooltip = ({ status, isOpen, onClose }) => {
-  const text =
-    status === 'success'
-      ? 'Вы успешно зарегистрировались!'
-      : 'Что-то пошло не так! Попробуйте ещё раз.';
-
+const InfoTooltip = ({ status, text, isOpen, onClose }) => {
   const tipImg = status === 'success' ? successImg : failImg;
 
   return (
