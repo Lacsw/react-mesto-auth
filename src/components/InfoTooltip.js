@@ -1,11 +1,12 @@
 import successImg from '../images/success.svg';
 import failImg from '../images/fail.svg';
 
-const InfoTooltip = ({ status, text, isOpen, onClose }) => {
+const InfoTooltip = ({ state, onClose }) => {
+  const { opened, status, text } = state;
   const tipImg = status === 'success' ? successImg : failImg;
 
   return (
-    <div className={`popup ${isOpen && 'popup_opened'}`}>
+    <div className={`popup ${opened && 'popup_opened'}`}>
       <div className="popup__container">
         <button
           onClick={onClose}

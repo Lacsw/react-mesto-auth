@@ -28,9 +28,11 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isTooltipOpen, setTooltipOpened] = useState(false);
-  const [tooltipStatus, setTooltipStatus] = useState('');
-  const [tooltipText, setTooltipText] = useState('');
+  const [infoTooltipState, setInfoTooltipState] = useState({
+    opened: false,
+    status: 'fail',
+    text: '',
+  });
   const [userEmail, setUserEmail] = useState(null);
 
   const navigate = useNavigate();
@@ -62,8 +64,9 @@ function App() {
     setAddPlacePopupOpen(false);
     setConfimDeletePopupOpen(false);
     setSelectedCard({});
-    setTooltipOpened(false);
-    setTooltipStatus('');
+    setInfoTooltipState({
+      opened: false,
+    });
   }
 
   function handleUpdateUser(userInfo) {
@@ -171,15 +174,19 @@ function App() {
     auth
       .signup(data)
       .then(() => {
-        setTooltipOpened(true);
-        setTooltipStatus('success');
-        setTooltipText('Вы успешно зарегистрировались!');
+        setInfoTooltipState({
+          opened: true,
+          status: 'success',
+          text: 'Вы успешно зарегистрировались!',
+        });
         navigate('/sign-in', { replace: true });
       })
       .catch((error) => {
-        setTooltipOpened(true);
-        setTooltipStatus('fail');
-        setTooltipText('Что-то пошло не так! Попробуйте ещё раз.');
+        setInfoTooltipState({
+          opened: true,
+          status: 'fail',
+          text: 'Что-то пошло не так! Попробуйте ещё раз.',
+        });
         console.log(error);
       });
   }
@@ -193,9 +200,11 @@ function App() {
         navigate('/', { replace: true });
       })
       .catch((error) => {
-        setTooltipOpened(true);
-        setTooltipStatus('fail');
-        setTooltipText('Что-то пошло не так! Попробуйте ещё раз.');
+        setInfoTooltipState({
+          opened: true,
+          status: 'fail',
+          text: 'Что-то пошло не так! Попробуйте ещё раз.',
+        });
         console.log(error);
       });
   };
@@ -261,12 +270,7 @@ function App() {
       />
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-      <InfoTooltip
-        status={tooltipStatus}
-        text={tooltipText}
-        isOpen={isTooltipOpen}
-        onClose={closeAllPopups}
-      />
+      <InfoTooltip state={infoTooltipState} onClose={closeAllPopups} />
     </CurrentUserContext.Provider>
   );
 }
