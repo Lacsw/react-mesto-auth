@@ -1,3 +1,5 @@
+import Popup from './Popup';
+
 function PopupWithForm({
   name,
   title,
@@ -8,28 +10,19 @@ function PopupWithForm({
   onSubmit,
 }) {
   return (
-    <div className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}>
-      <div className="popup__container">
-        <button
-          onClick={onClose}
-          className="popup__close-btn"
-          type="button"
-          aria-label="кнопка закрытия попапа"
-        ></button>
-        <h2 className="popup__title">{title}</h2>
-        <form
-          className={`popup__form popup__${name}-form`}
-          name={`${name}-form`}
-          onSubmit={onSubmit}
-        >
-          {children}
+    <Popup name={name} isOpen={isOpen} onClose={onClose}>
+      <h2 className='popup__title'>{title}</h2>
+      <form
+        className={`popup__form popup__${name}-form`}
+        name={`${name}-form`}
+        onSubmit={onSubmit}>
+        {children}
 
-          <button className="popup__submit-btn" type="submit">
-            {submitBtnText}
-          </button>
-        </form>
-      </div>
-    </div>
+        <button className='popup__submit-btn' type='submit'>
+          {submitBtnText}
+        </button>
+      </form>
+    </Popup>
   );
 }
 

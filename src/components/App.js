@@ -23,6 +23,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isConfimDeletePopupOpen, setConfimDeletePopupOpen] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [deletedCard, setDeletedCard] = useState({});
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
@@ -56,6 +57,7 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCard(card);
+    setIsImagePopupOpen(true);
   }
 
   function closeAllPopups() {
@@ -64,6 +66,7 @@ function App() {
     setAddPlacePopupOpen(false);
     setConfimDeletePopupOpen(false);
     setSelectedCard({});
+    setIsImagePopupOpen(false);
     setInfoTooltipState({
       opened: false,
     });
@@ -222,10 +225,10 @@ function App() {
       <Routes>
         <Route element={<ProtectedRoute loggedIn={loggedIn} />}>
           <Route
-            path="/"
+            path='/'
             element={
               <Main
-                name="place-name"
+                name='place-name'
                 cards={cards}
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
@@ -238,10 +241,10 @@ function App() {
           />
         </Route>
         <Route
-          path="/sign-up"
+          path='/sign-up'
           element={<Register onRegister={handelRegisterUser} />}
         />
-        <Route path="/sign-in" element={<Login handleLogin={handleLogin} />} />
+        <Route path='/sign-in' element={<Login handleLogin={handleLogin} />} />
       </Routes>
 
       <Footer />
@@ -269,7 +272,12 @@ function App() {
         card={deletedCard}
       />
 
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <ImagePopup
+        isOpen={isImagePopupOpen}
+        card={selectedCard}
+        onClose={closeAllPopups}
+        name='image'
+      />
       <InfoTooltip state={infoTooltipState} onClose={closeAllPopups} />
     </CurrentUserContext.Provider>
   );
