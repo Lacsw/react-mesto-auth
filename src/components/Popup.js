@@ -9,12 +9,20 @@ const Popup = ({ children, name, isOpen, onClose }) => {
         onClose();
       }
     };
-    window.addEventListener('keydown', closeByEsc);
-    return () => window.removeEventListener('keydown', closeByEsc);
+    document.addEventListener('keydown', closeByEsc);
+    return () => document.removeEventListener('keydown', closeByEsc);
   }, [onClose]);
 
+  const closeByOver = (evt) => {
+    if (evt.target.classList.contains('popup')) {
+      onClose();
+    }
+  };
+
   return (
-    <div className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}>
+    <div
+      className={`popup popup_type_${name} ${isOpen && 'popup_opened'}`}
+      onClick={closeByOver}>
       <div className={`popup__${isImagePopup ? 'image-' : ''}container`}>
         <button
           onClick={onClose}
