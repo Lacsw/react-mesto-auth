@@ -4,14 +4,16 @@ const Popup = ({ children, name, isOpen, onClose }) => {
   const isImagePopup = name === 'image';
 
   useEffect(() => {
-    const closeByEsc = (evt) => {
-      if (evt.key === 'Escape') {
-        onClose();
-      }
-    };
-    document.addEventListener('keydown', closeByEsc);
-    return () => document.removeEventListener('keydown', closeByEsc);
-  }, [onClose]);
+    if (isOpen) {
+      const closeByEsc = (evt) => {
+        if (evt.key === 'Escape') {
+          onClose();
+        }
+      };
+      document.addEventListener('keydown', closeByEsc);
+      return () => document.removeEventListener('keydown', closeByEsc);
+    }
+  }, [isOpen, onClose]);
 
   const closeByOver = (evt) => {
     if (evt.target.classList.contains('popup')) {
